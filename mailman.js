@@ -69,7 +69,7 @@ module.exports = {
 						});
 					});
 					msg.once('end', function() {
-						messages.push(buffer);
+						messages.push(Imap.parseHeader(buffer));
 					});
 				});
 
