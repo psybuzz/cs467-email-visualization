@@ -1,0 +1,13 @@
+{
+  "name": "cs467-email-visualization",
+  "version": "0.0.0",
+  "description": "Final project for CS467: Social Visualization at UIUC, Fall 2014",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/psybuzz/cs467-email-visualization.git"
+  },
+  "dependencies": {
+    "imap": "^0.8.14",
+  }
+}
