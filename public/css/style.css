@@ -2,12 +2,24 @@
 body {
   background: #222;
   font: 10px sans-serif;
-  margin: auto;
+  margin-left:200px;
   position: relative;
-  width: 960px;
   font-family: 'Helvetica Neue', sans-serif;
+  margin-right:200px;
 }
-
+.container{
+  margin-top:80px;
+}
+#svgContainer{
+  margin-left:120px;
+}
+svg{
+  background-color:rgba(255, 255, 255, 0.17);
+  border-radius:500px;
+  position:relative;
+  display: inline-block;
+  margin-left:15px;
+}
 text {
   color: white;
   text-anchor: middle;
@@ -15,11 +27,20 @@ text {
 }
 h1{
   color:white;
-  font-size:50px;
+  font-size:60px;
   text-align:center;
   font-weight: 100;
 }
-
+h3{
+  color:white;
+  font-size:30px;
+  text-align:center;
+  font-weight: 100;
+}
+.svgDiv{
+  width:330px;
+  display:inline-block;
+}
 #credit {
   position: absolute;
   right: 4px;
@@ -41,7 +62,7 @@ h1{
   #my-legend #legend-title {
     text-align: left;
     margin-bottom: 5px;
-    font-size: 20px;
+    font-size: 22px;
     color:white;
     }
   #my-legend #legend-scale ul {
@@ -52,7 +73,7 @@ h1{
     list-style: none;
     }
   #my-legend #legend-scale ul li {
-    font-size: 15px;
+    font-size: 18px;
     list-style: none;
     margin-left: 0;
     line-height: 18px;
