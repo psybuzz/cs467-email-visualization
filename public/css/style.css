@@ -18,7 +18,7 @@ svg{
   border-radius:500px;
   position:relative;
   display: inline-block;
-  margin-left:30px;
+  margin-left:15px;
 }
 text {
   color: white;
@@ -27,11 +27,20 @@ text {
 }
 h1{
   color:white;
-  font-size:50px;
+  font-size:60px;
   text-align:center;
   font-weight: 100;
 }
-
+h3{
+  color:white;
+  font-size:30px;
+  text-align:center;
+  font-weight: 100;
+}
+.svgDiv{
+  width:330px;
+  display:inline-block;
+}
 #credit {
   position: absolute;
   right: 4px;
@@ -53,7 +62,7 @@ h1{
   #my-legend #legend-title {
     text-align: left;
     margin-bottom: 5px;
-    font-size: 20px;
+    font-size: 22px;
     color:white;
     }
   #my-legend #legend-scale ul {
@@ -64,7 +73,7 @@ h1{
     list-style: none;
     }
   #my-legend #legend-scale ul li {
-    font-size: 15px;
+    font-size: 18px;
     list-style: none;
     margin-left: 0;
     line-height: 18px;

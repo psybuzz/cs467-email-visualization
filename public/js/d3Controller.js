@@ -3,11 +3,11 @@ var jsonDataGlobal = []; //holds array of values which will be taken from backen
 
 
 $("document").ready(function(){
-  createSVG(.1,"hi",.3,"jennifer");
-  createSVG(.1,"hi",.4,"jack");
-  createSVG(.1,"hi",.5,"jill");
-  createSVG(.1,"hi",.2,"yugioh");
-  createLegend(); //create a legend
+  createSVG(.1,"30 min",.3,"jennifer");
+  createSVG(.1,"40 min",.4,"jack");
+  createSVG(.1,"50 min",.5,"jill");
+  createSVG(.1,"20 min",.2,"yugioh");
+  //createLegend(); //create a legend
 })
 
 
@@ -40,7 +40,13 @@ function createSVG(index_p,text_p,value_p,name_p)
         .innerRadius(function(d) { return d.index * radius; })
         .outerRadius(function(d) { return (d.index + spacing) * radius; });
 
-      var svg = d3.select("#svgContainer").append("svg")
+      d3.select("#svgContainer").append("div")
+        .attr("class","svgDiv")
+        .attr("id",name_)
+      d3.select("#"+name_).append("h3")
+        .text(name_)
+
+      var svg = d3.select("#"+name_).append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
@@ -119,7 +125,7 @@ function createSVG(index_p,text_p,value_p,name_p)
       };
     }
 
-function createLegend(){
+/*function createLegend(){
   console.log(jsonDataGlobal)
   jsonDataGlobal.forEach(function(data){
       var redColor = color(data[0].value).rgb().r;
@@ -136,4 +142,4 @@ function createLegend(){
   })
   console.log(color(.2).rgb())
 
-}
+}*/
