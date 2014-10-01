@@ -68,13 +68,13 @@ function arcTween(d) {
 function fields() {
   var now = new Date; //just messing with values
   jsonDataGlobal = [
-    {index: .7, text: "20 min",value: .20,name: "jake"},
-    {index: .6, text: "21 min",value: .12,name: "bob"},
-    {index: .5, text: "22 min",value: .22,name: "alex"},
-    {index: .4, text: "23 min",value: .30,name: "chris"},
-    {index: .3, text: "24 min",value: .10,name: "jennifer"},
-    {index: .2, text: "25 min",value: .15,name: "jasmine"},
-    {index: .1, text: "26 min", value: .30,name: "emily"}
+    {index: .7, text: "20 min",value: .34,name: "jake"},
+    {index: .6, text: "21 min",value: .36,name: "bob"},
+    {index: .5, text: "22 min",value: .50,name: "alex"},
+    {index: .4, text: "23 min",value: .21,name: "chris"},
+    {index: .3, text: "24 min",value: .42,name: "jennifer"},
+    {index: .2, text: "25 min",value: .52,name: "jasmine"},
+    {index: .1, text: "26 min", value: .60,name: "emily"}
   ];
   return jsonDataGlobal;
 }

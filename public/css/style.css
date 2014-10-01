@@ -8,7 +8,7 @@ body {
 }
 
 text {
-    color: white;
+  color: white;
   text-anchor: middle;
   font: 10px;
   font-weight: 100;
@@ -36,12 +36,12 @@ h1{
     color:white;
     z-index: -1;
     position: absolute;
+    font-weight:100;
 }
   #my-legend #legend-title {
     text-align: left;
     margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 90%;
+    font-size: 20px;
     color:white;
     }
   #my-legend #legend-scale ul {
@@ -52,7 +52,7 @@ h1{
     list-style: none;
     }
   #my-legend #legend-scale ul li {
-    font-size: 80%;
+    font-size: 11px;
     list-style: none;
     margin-left: 0;
     line-height: 18px;
@@ -74,7 +74,4 @@ h1{
     }
   #my-legend a {
     color: white;
-    }
-    #jennifer span{
-      background: rgb(12,20,23);
     }
