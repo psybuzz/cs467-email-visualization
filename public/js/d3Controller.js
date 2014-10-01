@@ -1,21 +1,15 @@
+var jsonDataGlobal; //holds array of values which will be taken from backend. used for legend in d3.
+
 var width = 960,
     height = 800,
     radius = Math.min(width, height) / 1.9,
     spacing = .09;
-
-var formatSecond = d3.time.format("%S s"),
-    formatMinute = d3.time.format("%M m"),
-    formatHour = d3.time.format("%H h"),
-    formatDay = d3.time.format("%a"),
-    formatDate = d3.time.format("%d d"),
-    formatMonth = d3.time.format("%b");
-
 var color = d3.scale.linear()
     .range(["hsl(-180,50%,50%)", "hsl(180,50%,50%)"])
     .interpolate(interpolateHsl);
 
 var arc = d3.svg.arc()
-    .startAngle(0)
+    .startAngle(-1.6)
     .endAngle(function(d) { return d.value * 2 * Math.PI; })
     .innerRadius(function(d) { return d.index * radius; })
     .outerRadius(function(d) { return (d.index + spacing) * radius; });
@@ -38,9 +32,11 @@ d3.transition().duration(0).each(tick);
 
 d3.select(self.frameElement).style("height", height + "px");
 
+createLegend(); //create a legend
+
 function tick() {
   field = field
-      .each(function(d) { this._value = d.value; })
+      .each(function(d) { this._value = d.value;})
       .data(fields)
       .each(function(d) { d.previousValue = this._value; });
 
@@ -70,21 +66,43 @@ function arcTween(d) {
 }
 
 function fields() {
-  var now = new Date;
-  return [
-    {index: .7, text: formatSecond(now), value: now.getSeconds() / 60},
-    {index: .6, text: formatMinute(now), value: now.getMinutes() / 60},
-    {index: .5, text: formatHour(now),   value: now.getHours() / 24},
-    {index: .3, text: formatDay(now),    value: now.getDay() / 7},
-    {index: .2, text: formatDate(now),   value: (now.getDate() - 1) / (32 - new Date(now.getYear(), now.getMonth(), 32).getDate())},
-    {index: .1, text: formatMonth(now),  value: now.getMonth() / 12}
+  var now = new Date; //just messing with values
+  jsonDataGlobal = [
+    {index: .7, text: "20 min",value: .34,name: "jake"},
+    {index: .6, text: "21 min",value: .36,name: "bob"},
+    {index: .5, text: "22 min",value: .50,name: "alex"},
+    {index: .4, text: "23 min",value: .21,name: "chris"},
+    {index: .3, text: "24 min",value: .42,name: "jennifer"},
+    {index: .2, text: "25 min",value: .52,name: "jasmine"},
+    {index: .1, text: "26 min", value: .60,name: "emily"}
   ];
+  return jsonDataGlobal;
 }
-
 // Avoid shortest-path interpolation.
 function interpolateHsl(a, b) {
   var i = d3.interpolateString(a, b);
   return function(t) {
     return d3.hsl(i(t));
   };
+}
+
+
+
+function createLegend(){
+  jsonDataGlobal.forEach(function(data){
+      var redColor = color(data.value).rgb().r;
+      var greenColor = color(data.value).rgb().g;
+      var blueColor = color(data.value).rgb().b;
+      var dataValue = data.value;
+      var dataText = data.text;
+      var dataName = data.name;
+      $("#legend-labels").append("<li id = '"+ dataName+ "'></li>");
+     $("#"+dataName).text(dataName)
+     console.log($("#"+dataName +" span").text("fuck"))
+     $("#"+dataName).append("<span></span>")
+     var backgroundColor = " rgb(" + redColor + "," + greenColor + "," + blueColor + ")";
+     $("#"+dataName+" span").css("background",backgroundColor);
+  })
+  console.log(color(.2).rgb())
+
 }

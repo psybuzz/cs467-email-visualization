@@ -1,13 +1,23 @@
+
 body {
   background: #222;
   font: 10px sans-serif;
   margin: auto;
   position: relative;
   width: 960px;
+  font-family: 'Helvetica Neue', sans-serif;
 }
 
 text {
+  color: white;
   text-anchor: middle;
+  font-weight: 400;
+}
+h1{
+  color:white;
+  font-size:50px;
+  text-align:center;
+  font-weight: 100;
 }
 
 #credit {
@@ -21,3 +31,47 @@ text {
   color: #fff;
   font-weight: bold;
 }
+
+#my-legend{
+    color:white;
+    z-index: -1;
+    position: absolute;
+    font-weight:100;
+}
+  #my-legend #legend-title {
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 20px;
+    color:white;
+    }
+  #my-legend #legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  #my-legend #legend-scale ul li {
+    font-size: 15px;
+    list-style: none;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 2px;
+    }
+  #my-legend ul#legend-labels li span {
+    display: block;
+    float: left;
+    height: 18px;
+    width:32px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid white;
+    }
+  #my-legend #legend-source {
+    font-size: 70%;
+    color: white;
+    clear: both;
+    }
+  #my-legend a {
+    color: white;
+    }
