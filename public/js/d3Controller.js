@@ -70,14 +70,14 @@ function arcTween(d) {
 }
 
 function fields() {
-  var now = new Date;
+  var now = new Date; //just messing with values
   return [
-    {index: .7, text: formatSecond(now), value: now.getSeconds() / 60},
-    {index: .6, text: formatMinute(now), value: now.getMinutes() / 60},
+    {index: .7, text: "20 min",value: .2},
+    {index: .6, text: "30 min",value: .3},
     {index: .5, text: formatHour(now),   value: now.getHours() / 24},
     {index: .3, text: formatDay(now),    value: now.getDay() / 7},
     {index: .2, text: formatDate(now),   value: (now.getDate() - 1) / (32 - new Date(now.getYear(), now.getMonth(), 32).getDate())},
-    {index: .1, text: formatMonth(now),  value: now.getMonth() / 12}
+    {index: .1, text: "10 min",  value: .1}
   ];
 }
 
