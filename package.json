@@ -8,6 +8,5 @@
     "url": "https://github.com/psybuzz/cs467-email-visualization.git"
   },
   "dependencies": {
-    "imap": "^0.8.14",
   }
 }

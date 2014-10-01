@@ -1,4 +1,13 @@
 var Mailman = require('./mailman');
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
+var port = process.env.PORT || 3000;
+
+app.use(express.static(__dirname + '/public'));
+server.listen(port, function () {
+  console.log('Server listening at port %d', port);
+});
 var fs = require('fs');
 
 // Configuration options.
@@ -6,7 +15,7 @@ var options = {
 	fetchFromFile: true,
 	outputFile: 'my_email.txt',
 	limit: undefined,
-	myEmailAddress: 'ekluo1@gmail.com'
+	myEmailAddress: 'krestofur@gmail.com'
 };
 
 // Either fetch email data from online and save to a file, or read from a
