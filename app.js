@@ -6,7 +6,7 @@ var options = {
 	fetchFromFile: true,
 	outputFile: 'my_email.txt',
 	limit: undefined,
-	myEmailAddress: 'ekluo1@gmail.com'
+	myAddresses: ['ekluo1@gmail.com', 'psybuzz@gmail.com', 'erikluo2@illinois.edu']
 };
 
 // Either fetch email data from online and save to a file, or read from a
@@ -59,6 +59,8 @@ function fetchEmailFromServer (outputFile, limit) {
 	}, limit);
 }
 
+
+
 /**
  * Analyzes email message data.
  * 
@@ -69,44 +71,94 @@ function analyzeEmails (messages){
 	var messageCount = messages.length;
 	console.log('Analyzing', messages.length, 'messages...');
 
-	// Get a list of unique contacts.
 	var contactHash = {};
+	var toDateHash = {};
+	var fromDateHash = {};
 	var contacts = [];
+
+	// Get a list of unique contacts whom I send emails to.
+	// Also, save the dates in the TO field for each person.
 	for (var i=0; i<messageCount; i++){
 		var message = messages[i];
 		var contact;
 
-		// Skip if I am not a sender.
-		if (containsMyAddress(message.from) === false){
-			continue;
-		}
-
-		// Skip if the to field is blank.
-		if (!message.to) continue;
+		// Skip if I am not a sender, or the TO field is blank.
+		if (containsMyAddress(message.from) === false || !message.to) continue;
 		
 		// Clean the list.
-		message.to = (message.to.length === 1) ? message.to[0].split(', ') :
-				message.to;
-		message.to = message.to.map(function (el) {
-			return el.toLowerCase();
-		}).filter(function (el){
-			return el.indexOf('@') !== -1 && el.indexOf('.') !== -1;
-		});
+		message.to = cleanAddressList(message.to);
 		
 		// Check the to fields.
-		for (j=0; j<message.to.length; j++) {
+		for (var j=0; j<message.to.length; j++) {
 			contact = message.to[j];
 
 			// Hash it if we haven't seen it, excluding your own address.
-			if (contactHash[contact] !== true &&
-					contact.indexOf(options.myEmailAddress) === -1){
-				contactHash[contact] = true;
+			if (contactHash[contact] === undefined &&
+					!containsMyAddress([contact])){
+				contactHash[contact] = 0;
+				contactHash[contact] += 1;
+
+				// Create array for TO dates.
+				toDateHash[contact] = [message.date];
+
 				contacts.push(contact);
+			} else if (!containsMyAddress([contact])){
+				// Otherwise, keep track of frequencies.
+				contactHash[contact] += 1;
+
+				// Update TO date hash.
+				toDateHash[contact].push(message.date);
 			}
 		}
 	}
 
-	console.log(contacts, "\nFound", contacts.length, "people you sent emails to.");
+
+	// Update the FROM date hash for people who send me emails.
+	for (i=0; i<messageCount; i++){
+		message = messages[i];
+
+		// Skip if I am a sender.
+		if (containsMyAddress(message.from)) continue;
+		
+		// Clean the list.
+		message.from = cleanAddressList(message.from);
+		
+		// Check the from fields.
+		for (j=0; j<message.from.length; j++) {
+			contact = message.from[j];
+
+			// Hash the date if we have contacted this person.
+			if (contacts.indexOf(contact) !== -1){
+				if (fromDateHash[contact] === undefined){
+					// Create array for FROM dates.
+					fromDateHash[contact] = [message.date];
+				} else {
+					// Update FROM date hash.
+					fromDateHash[contact].push(message.date);
+				}
+			}
+
+			// Hash the event if we have contacted this person.
+			if (contactHash[contact] !== undefined){
+				contactHash[contact] += 1;
+			}
+		}
+	}
+
+	// Filter out people with TO and FROM communications.
+	contacts = contacts.filter(function (el){
+		return toDateHash[el] && fromDateHash[el];
+	}).sort(function (a, b) {
+		return contactHash[a] >= contactHash[b];
+	});
+
+	// Print out the contacts.
+	for (i = 0; i < contacts.length; i++) {
+		var contact = contacts[i];
+		console.log(contact, '\t', contactHash[contact]);
+	}
+
+	console.log("\nFound", contacts.length, "people you email with.");
 
 	// Now, what was your response time?
 }
@@ -118,10 +170,35 @@ function analyzeEmails (messages){
  * @return {boolean}             		True if the list contains my email.
  */
 function containsMyAddress (contactList) {
-	for (var i = 0; i < contactList.length; i++) {
-		if (contactList[i].indexOf(options.myEmailAddress) !== -1){
-			return true;
+	for (var i = 0; i < contactList.length; i++){
+		for (var j = 0; j < options.myAddresses.length; j++) {
+			if (contactList[i].indexOf(options.myAddresses[j]) !== -1){
+				return true;
+			}
 		}
 	}
 	return false;
+}
+
+/**
+ * Cleans a list of email addresses by validating them, using lowercase, and
+ * removing common names.
+ * 
+ * @param  {Array.String} list A list of email addresses.
+ * @return {Array.String}      A cleaned list.
+ */
+function cleanAddressList (list) {
+	list = (list.length === 1) ?
+				list[0].split(', ') : list;
+	list = list.map(function (el) {
+		if (el.indexOf('<') !== -1){
+			el = el.slice(el.indexOf('<')+1, el.indexOf('>'));
+		}
+
+		return el.toLowerCase();
+	}).filter(function (el){
+		return el.indexOf('@') !== -1 && el.indexOf('.') !== -1;
+	});
+
+	return list;
 }
