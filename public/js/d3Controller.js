@@ -3,10 +3,6 @@ var jsonDataGlobal = []; //holds array of values which will be taken from backen
 
 
 $("document").ready(function(){
-	createSVG(.1,"30 min",.3,"January");
-	createSVG(.1,"40 min",.4,"Febuary");
-	createSVG(.1,"50 min",.5,"March");
-	createSVG(.1,"90 min",.9,"April");
 	//createLegend(); //create a legend
 })
 
@@ -23,10 +19,11 @@ function createSVG(index_p,text_p,value_p,name_p)
 	var text_ = text_p;
 	var value_ = value_p;
 	var name_ = name_p;
+	var id_ = 'circle-' + (++state.circleNum);
 
-	var width = 300,
-	height = 300,
-	radius = 600,
+	var width = 200,
+	height = 200,
+	radius = 300,
 	spacing = .12;
 
 
@@ -42,14 +39,14 @@ function createSVG(index_p,text_p,value_p,name_p)
 
 	d3.select("#svgContainer").append("div")
 		.attr("class","svgDiv")
-		.attr("id",name_)
-	d3.select("#"+name_).append("h3")
+		.attr("id",id_)
+	d3.select("#"+id_).append("h3")
 		.text(name_)
 
-	var svg = d3.select("#"+name_).append("svg")
+	var svg = d3.select("#"+id_).append("svg")
 		.attr("width", width)
 		.attr("height", height)
-		.attr("id", name_+"SVG")
+		.attr("id", id_+"SVG")
 		.append("g")
 		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 

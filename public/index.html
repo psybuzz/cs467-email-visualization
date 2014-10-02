@@ -7,7 +7,12 @@
 </head>
 <body>
   <h1>Email Response Time Visualization</h1>
-
+  <div id="optionsList">
+	  <button id="login-btn" class="load-btn">Enter Email Login</button>
+	  <button id="load-data-btn" class="load-btn">Load Real Data</button>
+	  <button id="load-fake-btn" class="load-btn">Load Fake Data</button>
+  </div>
+  <h1 id="big-stats"></h1>
   <div id ="svgContainer">
   </div>
 
@@ -19,4 +24,6 @@
 <script src="js/jquery.min.js"></script>
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="js/d3Controller.js"></script>
+<script src="js/login.js"></script>
+<script src="js/ui.js"></script>
 

@@ -1,98 +1,124 @@
 
 body {
-  background: #222;
-  font: 10px sans-serif;
-  margin-left:200px;
-  position: relative;
-  font-family: 'Helvetica Neue', sans-serif;
-  margin-right:200px;
+	background: #222;
+	font: 10px sans-serif;
+	margin-left:200px;
+	margin-bottom: 200px;
+	position: relative;
+	font-family: 'Helvetica Neue', sans-serif;
+	margin-right:200px;
 }
 .container{
-  margin-top:80px;
+	margin-top:80px;
 }
 #svgContainer{
-  margin-left:120px;
+	/*margin-left:120px;*/
 }
 svg{
-  background-color:rgba(255, 255, 255, 0.17);
-  border-radius:500px;
-  position:relative;
-  display: inline-block;
-  margin-left:15px;
+	background-color:rgba(255, 255, 255, 0.17);
+	border-radius:500px;
+	position:relative;
+	display: inline-block;
+	margin-left:15px;
 }
 text {
-  color: white;
-  text-anchor: middle;
-  font-weight: 400;
+	color: white;
+	text-anchor: middle;
+	font-weight: 400;
 }
 h1{
-  color:white;
-  font-size:60px;
-  text-align:center;
-  font-weight: 100;
+	color:white;
+	font-size:50px;
+	text-align:center;
+	font-weight: 100;
 }
 h3{
-  color:white;
-  font-size:30px;
-  text-align:center;
-  font-weight: 100;
+	color:white;
+	font-size:20px;
+	text-align:center;
+	font-weight: 100;
 }
 .svgDiv{
-  width:330px;
-  display:inline-block;
+	width:230px;
+	display:inline-block;
 }
 #credit {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  color: #ddd;
+	position: absolute;
+	right: 4px;
+	bottom: 4px;
+	color: #ddd;
 }
 
 #credit a {
-  color: #fff;
-  font-weight: bold;
+	color: #fff;
+	font-weight: bold;
 }
 
 #my-legend{
-    color:white;
-    z-index: -1;
-    position: absolute;
-    font-weight:100;
+		color:white;
+		z-index: -1;
+		position: absolute;
+		font-weight:100;
 }
-  #my-legend #legend-title {
-    text-align: left;
-    margin-bottom: 5px;
-    font-size: 22px;
-    color:white;
-    }
-  #my-legend #legend-scale ul {
-    margin: 0;
-    margin-bottom: 5px;
-    padding: 0;
-    float: left;
-    list-style: none;
-    }
-  #my-legend #legend-scale ul li {
-    font-size: 18px;
-    list-style: none;
-    margin-left: 0;
-    line-height: 18px;
-    margin-bottom: 2px;
-    }
-  #my-legend ul#legend-labels li span {
-    display: block;
-    float: left;
-    height: 18px;
-    width:32px;
-    margin-right: 5px;
-    margin-left: 0;
-    border: 1px solid white;
-    }
-  #my-legend #legend-source {
-    font-size: 70%;
-    color: white;
-    clear: both;
-    }
-  #my-legend a {
-    color: white;
-    }
+#my-legend #legend-title {
+	text-align: left;
+	margin-bottom: 5px;
+	font-size: 22px;
+	color:white;
+}
+#my-legend #legend-scale ul {
+	margin: 0;
+	margin-bottom: 5px;
+	padding: 0;
+	float: left;
+	list-style: none;
+}
+#my-legend #legend-scale ul li {
+	font-size: 18px;
+	list-style: none;
+	margin-left: 0;
+	line-height: 18px;
+	margin-bottom: 2px;
+}
+#my-legend ul#legend-labels li span {
+	display: block;
+	float: left;
+	height: 18px;
+	width:32px;
+	margin-right: 5px;
+	margin-left: 0;
+	border: 1px solid white;
+}
+#my-legend #legend-source {
+	font-size: 70%;
+	color: white;
+	clear: both;
+}
+#my-legend a {
+	color: white;
+}
+
+#optionsList{
+	display: flex;
+}
+#optionsList > button{
+	flex-grow: 1;
+	margin: 5px;
+}
+.load-btn{
+	border: 0;
+	background-color: white;
+	font-weight: 200;
+	font-size: 20px;
+	padding: 0px 30px;
+	outline: none;
+}
+.load-btn:hover{
+	background-color: dimgray;
+}
+.load-btn:active{
+	background-color: black
+}
+#big-stats{
+
+}

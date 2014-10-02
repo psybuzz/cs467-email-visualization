@@ -14,7 +14,7 @@ server.listen(port, function () {
 app.use(express.static(__dirname + '/public'));
 
 // Serve pre-saved email data from local files.
-app.get('/data', function (req, res){
+app.post('/data', function (req, res){
 	fetchEmailFromFile(options.outputFile, function (messages){
 		var results = analyzeEmails(messages);
 		res.send(results);
