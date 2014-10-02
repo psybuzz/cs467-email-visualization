@@ -1,3 +1,4 @@
+var Secret = require('./secret');
 var Mailman = require('./mailman');
 var express = require('express');
 var port = process.env.PORT || 3000;
@@ -27,7 +28,7 @@ var options = {
 	fetchFromFile: true,
 	outputFile: 'my_email.txt',
 	limit: undefined,
-	myAddresses: ['youremail@gmail.com']
+	myAddresses: Secret.aliases || 'krestofur@gmail.com'
 };
 
 // Either fetch email data from online and save to a file, or read from a
@@ -71,17 +72,22 @@ function fetchEmailFromFile (outputFile, callback) {
  * @param {Function} callback 	The callback to be executed with the data.
  */
 function fetchEmailFromServer (outputFile, limit, callback) {
+	console.log('Fetching mail...');
+
 	// We can fetch emails to be analyzed and write the results to a file.
 	Mailman.getMail(function (messages){
 		// console.log(messages);
+		console.log('Done fetching messages');
 
-		fs.writeFile(outputFile, JSON.stringify(messages), function(err) {
-			if(err) {
-				console.log(err);
-			} else {
-				console.log("The file was saved!");
-			}
-		});
+		if (outputFile){
+			fs.writeFile(outputFile, JSON.stringify(messages), function(err) {
+				if(err) {
+					console.log(err);
+				} else {
+					console.log("The file was saved!");
+				}
+			});
+		}
 
 		if (typeof callback === 'undefined'){
 			analyzeEmails(messages);

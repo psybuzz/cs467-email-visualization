@@ -47,22 +47,13 @@ module.exports = {
 	 * Gets the mail for the user and returns a promise.
 	 */
 	getMail: function (callback, count){
-		// Call the functions that were waiting for the imap to be ready.
-		imap.once('ready', function() {
-			module.exports.ready = true;
-
-			module.exports.getMail(function (){
-				for (var i = 0; i < module.exports.queuedCallbacks.length; i++) {
-					module.exports.queuedCallbacks[i](module.exports.messages);
-				}
-			});
-		});
-
 		if (!this.ready){
+			console.log('Mailman not ready...')
 			if (callback){
 				this.queuedCallbacks.push(callback);
 			}
 		} else {
+			console.log('Mailman ready...go!');
 			var startTime = Date.now();
 
 			openInbox(function(err, box) {
@@ -120,3 +111,17 @@ module.exports = {
 		}
 	}
 };
+
+// Call the functions that were waiting for the imap to be ready.
+imap.once('ready', function() {
+	console.log('Mailman: okay, now I am ready.')
+	module.exports.ready = true;
+
+	if (module.exports.queuedCallbacks.length > 0){
+		module.exports.getMail(function (){
+			for (var i = 0; i < module.exports.queuedCallbacks.length; i++) {
+				module.exports.queuedCallbacks[i](module.exports.messages);
+			}
+		});
+	}
+});

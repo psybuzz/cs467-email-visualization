@@ -11,7 +11,8 @@ The contents of secret.js should be as follows:
 <pre>
 module.exports = {
 	user: 'myname@gmail.com',
-	password: 'mysupersecret'
+	password: 'mysupersecret',
+	aliases: ['myname@gmail.com', 'myothername@gmail.com', 'etc@gmail.com']
 }
 </pre>
 
