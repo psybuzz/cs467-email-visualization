@@ -1,21 +1,33 @@
 var Mailman = require('./mailman');
 var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
 var port = process.env.PORT || 3000;
-
-app.use(express.static(__dirname + '/public'));
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
-});
 var fs = require('fs');
+var app = express();
+
+var server = require('http').createServer(app);		// Create a server.
+server.listen(port, function () {
+	console.log('Server listening at port %d', port);
+});
+
+// Serve the static web page located in the public directory.
+app.use(express.static(__dirname + '/public'));
+
+// Serve pre-saved email data from local files.
+app.get('/data', function (req, res){
+	fetchEmailFromFile(options.outputFile, function (messages){
+		var results = analyzeEmails(messages);
+		res.send(results);
+	});
+});
+
+
 
 // Configuration options.
 var options = {
 	fetchFromFile: true,
 	outputFile: 'my_email.txt',
 	limit: undefined,
-	myAddresses: ['ekluo1@gmail.com', 'psybuzz@gmail.com', 'erikluo2@illinois.edu']
+	myAddresses: ['youremail@gmail.com']
 };
 
 // Either fetch email data from online and save to a file, or read from a
@@ -32,14 +44,20 @@ if (options.fetchFromFile){
  * Directly analyze the email data from a previously saved file.
  * 
  * @param  {String} outputFile The output file.
+ * @param  {Function} callback The callback to be executed with the data.
  */
-function fetchEmailFromFile (outputFile) {
+function fetchEmailFromFile (outputFile, callback) {
 	fs.readFile(outputFile, 'utf8', function (err, data) {
 		if (err) {
 			return console.log(err);
 		}
 		
-		analyzeEmails(JSON.parse(data));
+		var messages = JSON.parse(data);
+		if (typeof callback === 'undefined'){
+			analyzeEmails(messages);
+		} else {
+			callback(messages);
+		}
 	});
 }
 
@@ -50,8 +68,9 @@ function fetchEmailFromFile (outputFile) {
  * @param {String} outputFile 	The output file.
  * @param {Number} limit 		The number of emails to get.  Leave undefined to
  *                         		get all emails.
+ * @param {Function} callback 	The callback to be executed with the data.
  */
-function fetchEmailFromServer (outputFile, limit) {
+function fetchEmailFromServer (outputFile, limit, callback) {
 	// We can fetch emails to be analyzed and write the results to a file.
 	Mailman.getMail(function (messages){
 		// console.log(messages);
@@ -64,7 +83,11 @@ function fetchEmailFromServer (outputFile, limit) {
 			}
 		});
 
-		analyzeEmails(messages);
+		if (typeof callback === 'undefined'){
+			analyzeEmails(messages);
+		} else {
+			callback(messages);
+		}
 	}, limit);
 }
 
@@ -81,8 +104,7 @@ function analyzeEmails (messages){
 	console.log('Analyzing', messages.length, 'messages...');
 
 	var contactHash = {};
-	var toDateHash = {};
-	var fromDateHash = {};
+	var dateHash = {};
 	var contacts = [];
 
 	// Get a list of unique contacts whom I send emails to.
@@ -91,85 +113,120 @@ function analyzeEmails (messages){
 		var message = messages[i];
 		var contact;
 
-		// Skip if I am not a sender, or the TO field is blank.
-		if (containsMyAddress(message.from) === false || !message.to) continue;
-		
 		// Clean the list.
 		message.to = cleanAddressList(message.to);
-		
-		// Check the to fields.
-		for (var j=0; j<message.to.length; j++) {
-			contact = message.to[j];
-
-			// Hash it if we haven't seen it, excluding your own address.
-			if (contactHash[contact] === undefined &&
-					!containsMyAddress([contact])){
-				contactHash[contact] = 0;
-				contactHash[contact] += 1;
-
-				// Create array for TO dates.
-				toDateHash[contact] = [message.date];
-
-				contacts.push(contact);
-			} else if (!containsMyAddress([contact])){
-				// Otherwise, keep track of frequencies.
-				contactHash[contact] += 1;
-
-				// Update TO date hash.
-				toDateHash[contact].push(message.date);
-			}
-		}
-	}
-
-
-	// Update the FROM date hash for people who send me emails.
-	for (i=0; i<messageCount; i++){
-		message = messages[i];
-
-		// Skip if I am a sender.
-		if (containsMyAddress(message.from)) continue;
-		
-		// Clean the list.
 		message.from = cleanAddressList(message.from);
-		
-		// Check the from fields.
-		for (j=0; j<message.from.length; j++) {
-			contact = message.from[j];
 
-			// Hash the date if we have contacted this person.
-			if (contacts.indexOf(contact) !== -1){
-				if (fromDateHash[contact] === undefined){
-					// Create array for FROM dates.
-					fromDateHash[contact] = [message.date];
-				} else {
-					// Update FROM date hash.
-					fromDateHash[contact].push(message.date);
+		// If I am the sender and the TO field is not blank.
+		if (containsMyAddress(message.from) === true && message.to){
+			// Check the to fields.
+			for (var j=0; j<message.to.length; j++) {
+				contact = message.to[j];
+
+				// Hash it if we haven't seen it, excluding your own address.
+				if (contactHash[contact] === undefined &&
+						!containsMyAddress([contact])){
+					contactHash[contact] = 0;
+					contactHash[contact] += 1;
+
+					// Create array for TO dates.
+					dateHash[contact] = [{date: message.date, type: 'sent'}];
+
+					contacts.push(contact);
+				} else if (!containsMyAddress([contact])){
+					// Otherwise, keep track of frequencies.
+					contactHash[contact] += 1;
+
+					// Update TO date hash.
+					dateHash[contact].push({date: message.date, type: 'sent'});
 				}
 			}
+		} else if (!containsMyAddress(message.from)){
+			// If I am not the sender.
+			// Update the FROM date hash for people who send me emails.
+		
+			// Check the from fields.
+			for (j=0; j<message.from.length; j++) {
+				contact = message.from[j];
 
-			// Hash the event if we have contacted this person.
-			if (contactHash[contact] !== undefined){
-				contactHash[contact] += 1;
+				// Hash the date if we have been contacted by this person.
+				if (contacts.indexOf(contact) !== -1){
+					if (dateHash[contact] === undefined){
+						// Create array for FROM dates.
+						dateHash[contact] = [{date: message.date, type: 'received'}];
+					} else {
+						// Update FROM date hash.
+						dateHash[contact].push({date: message.date, type: 'received'});
+					}
+				}
+
+				// Hash the event if we have contacted this person.
+				if (contactHash[contact] !== undefined){
+					contactHash[contact] += 1;
+				}
 			}
 		}
 	}
 
 	// Filter out people with TO and FROM communications.
 	contacts = contacts.filter(function (el){
-		return toDateHash[el] && fromDateHash[el];
-	}).sort(function (a, b) {
-		return contactHash[a] >= contactHash[b];
+		return typeof dateHash[el] !== 'undefined';
 	});
 
-	// Print out the contacts.
+	// Compute response times.
+	var responseTimeHash = {};
+	var responseTimes, dates, dateDiff;
 	for (i = 0; i < contacts.length; i++) {
-		var contact = contacts[i];
-		console.log(contact, '\t', contactHash[contact]);
+		contact = contacts[i];
+		responseTimes = {mine: [], theirs: []};
+
+		// Get an array of response times whenever a 'received' is followed by a
+		// 'sent' email.
+		dates = dateHash[contact];
+
+		for (j = 1; j < dates.length; j++) {
+			if (!dates[j]) continue;
+
+			dateDiff = (new Date(dates[j].date)).getTime() -
+					(new Date(dates[j-1].date)).getTime();
+
+			if (dates[j-1].type === 'received' && dates[j].type === 'sent'){
+				responseTimes.mine.push(dateDiff);
+			} else if (dates[j-1].type === 'sent' && dates[j].type === 'received'){
+				responseTimes.theirs.push(dateDiff);
+			}
+		}
+
+		// Hash the array of response times.
+		responseTimeHash[contact] = responseTimes;
 	}
 
-	console.log("\nFound", contacts.length, "people you email with.");
+	// Eliminate contacts without valid response times, or only one email.
+	for (i = 0; i < contacts.length; i++) {
+		contact = contacts[i];
 
-	// Now, what was your response time?
+		responseTimes = responseTimeHash[contact];
+		if ((responseTimes.mine.length === 0 && responseTimes.theirs.length === 0) ||
+				contactHash[contact] < 2){
+			// Remove the contact.
+			contacts.splice(i, 1);
+			delete contactHash[contact];
+			delete responseTimeHash[contact];
+
+			// Don't advance if we removed something.
+			i--;
+		}
+	}
+
+	// TODO: Analyze subject lines.
+
+	console.log('Finished analyzing.');
+
+	return {
+		contacts: contacts,
+		emailCount: contactHash,
+		responseTimes: responseTimeHash,
+	};
 }
 
 /**
@@ -197,6 +254,8 @@ function containsMyAddress (contactList) {
  * @return {Array.String}      A cleaned list.
  */
 function cleanAddressList (list) {
+	if (typeof list === 'undefined') return void 0;
+
 	list = (list.length === 1) ?
 				list[0].split(', ') : list;
 	list = list.map(function (el) {
