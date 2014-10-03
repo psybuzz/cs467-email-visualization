@@ -7,7 +7,7 @@ $("document").ready(function(){
 })
 
 
-function createSVG(index_p,text_p,value_p,name_p)
+function createSVG(index_p,text_p,value_p,name_p,container)
 {
 	//Variable declarations for SVGs...i know its messy to put here...but aiya
 	var temp = [
@@ -37,7 +37,7 @@ function createSVG(index_p,text_p,value_p,name_p)
 		.innerRadius(function(d) { return d.index * radius; })
 		.outerRadius(function(d) { return (d.index + spacing) * radius; });
 
-	d3.select("#svgContainer").append("div")
+	d3.select("#" + (container || "svgContainer")).append("div")
 		.attr("class","svgDiv")
 		.attr("id",id_)
 	d3.select("#"+id_).append("h3")

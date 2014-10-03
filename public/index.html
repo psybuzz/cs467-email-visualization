@@ -1,43 +1,58 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-    <link rel="stylesheet" type="text/css" href="css/normalize.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <title>Email Response Time Visualization</title>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<title>Email Response Time Visualization</title>
 </head>
 <body>
-  <h1>Email Response Time Visualization</h1>
-  <div id="optionsList">
-	  <button id="login-btn" class="load-btn">Enter Email Login</button>
-	  <button id="load-data-btn" class="load-btn">Load Real Data</button>
-	  <button id="load-fake-btn" class="load-btn">Load Fake Data</button>
-  </div>
-  <h1 id="big-stats"></h1>
+ 	<h1>Email Response Time Visualization</h1>
+	
+	<div id="optionsList">
+		<button id="login-btn" class="load-btn">Enter Email Login</button>
+		<button id="load-data-btn" class="load-btn">Load Real Data</button>
+		<button id="load-fake-btn" class="load-btn">Load Fake Data</button>
+	</div>
 
-  <div id="top-list">
-  	<div class="col">
-  		<span class="list-title">People I respond <span class="fast">quickly</span> to</span>
-	  	<ul id="mine-fast">
-	  	</ul>
-	  	<span class="list-title">People who respond <span class="fast">quickly</span> to me</span>
-	  	<ul id="theirs-fast">
-	  	</ul>
-  	</div>
-  	<div class="col">
-	  	<span class="list-title">People I respond <span class="slow">slowly</span> to</span>
-	  	<ul id="mine-slow">
-	  	</ul>
-	  	<span class="list-title">People who respond <span class="slow">slowly</span> to me</span>
-	  	<ul id="theirs-slow">
-	  	</ul>
-  	</div>
+	<div id="login-form">
+		<input type="email" placeholder="Email" id="username-input">
+		<input type="password" placeholder="Password" id="password-input">
+	</div>
+
+	<div id="results">
+		<h1 id="big-stats"></h1><br>
+
+		<h1>Throughout the year</h1>
+		<div id="monthContainer"></div>
+
+		<h1>Throughout the day</h1>
+		<div id="hourContainer"></div>
+
+		<div id="top-list">
+			<div class="col">
+				<span class="list-title">People I respond <span class="fast">quickly</span> to</span>
+				<ul id="mine-fast">
+				</ul>
+				<span class="list-title">People who respond <span class="fast">quickly</span> to me</span>
+				<ul id="theirs-fast">
+				</ul>
+			</div>
+			<div class="col">
+				<span class="list-title">People I respond <span class="slow">slowly</span> to</span>
+				<ul id="mine-slow">
+				</ul>
+				<span class="list-title">People who respond <span class="slow">slowly</span> to me</span>
+				<ul id="theirs-slow">
+				</ul>
+			</div>
+		</div><br>
+
+		<h1>People I respond quickly to</h1>
+		<div id ="svgContainer"></div>
+	</div>
+
   </div>
 
-  <div id ="svgContainer">
-  </div>
-
-
-  </div>
 </body>
 
 
@@ -45,5 +60,6 @@
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="js/d3Controller.js"></script>
 <script src="js/login.js"></script>
+<script src="js/data.js"></script>
 <script src="js/ui.js"></script>
 

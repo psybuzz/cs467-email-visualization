@@ -13,12 +13,38 @@ server.listen(port, function () {
 // Serve the static web page located in the public directory.
 app.use(express.static(__dirname + '/public'));
 
+// Use JSON request bodies.
+// app.use(express.bodyParser());
+app.use(express.json());
+app.use(express.urlencoded());
+
 // Serve pre-saved email data from local files.
 app.post('/data', function (req, res){
-	fetchEmailFromFile(options.outputFile, function (messages){
-		var results = analyzeEmails(messages);
-		res.send(results);
-	});
+	var user = req.body.username;
+	var pass = req.body.password;
+	if (user.length > 0 && pass.length > 0){
+		Mailman.initialize(user, pass);
+		Mailman.connect(function (){
+			// If we can authenticate, try to look for a file first.
+			fs.readFile(user+"_"+options.outputFile, 'utf8', function (err,data) {
+				if (err) {
+					// Otherwise, fetch from server.
+					fetchEmailFromServer(user+"_"+options.outputFile, options.limit, function (messages){
+						var results = analyzeEmails(messages);
+						res.send(results);
+					});
+				} else {
+					var results = analyzeEmails(JSON.parse(data));
+					res.send(results);
+				}
+			});
+		});
+	} else {
+		fetchEmailFromFile(options.outputFile, function (messages){
+			var results = analyzeEmails(messages);
+			res.send(results);
+		});
+	}
 });
 
 
@@ -52,7 +78,7 @@ function fetchEmailFromFile (outputFile, callback) {
 		if (err) {
 			return console.log(err);
 		}
-		
+
 		var messages = JSON.parse(data);
 		if (typeof callback === 'undefined'){
 			analyzeEmails(messages);
@@ -112,6 +138,7 @@ function analyzeEmails (messages){
 	var contactHash = {};
 	var dateHash = {};
 	var contacts = [];
+	var responseSubjects = [];
 
 	// Get a list of unique contacts whom I send emails to.
 	// Also, save the dates in the TO field for each person.
@@ -179,6 +206,18 @@ function analyzeEmails (messages){
 		return typeof dateHash[el] !== 'undefined';
 	});
 
+	// Create space to save month/hour info.
+	var monthSums = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0};
+	var monthCounts = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0};
+	var hourSums = new Array(24);
+	var hourCounts = new Array(24);
+	for (i = 0; i < 24; i++) {
+		hourSums[i] = 0;
+		hourCounts[i] = 0;
+	}
+
+	console.log(contacts)
+
 	// Compute response times.
 	var responseTimeHash = {};
 	var responseTimes, dates, dateDiff;
@@ -193,19 +232,30 @@ function analyzeEmails (messages){
 		for (j = 1; j < dates.length; j++) {
 			if (!dates[j]) continue;
 
-			dateDiff = (new Date(dates[j].date)).getTime() -
-					(new Date(dates[j-1].date)).getTime();
+			var firstDate = new Date(dates[j-1].date);
+			var secondDate = new Date(dates[j].date);
+			var currMonth = secondDate.getMonth();
+			var currHour = secondDate.getHours();
+			dateDiff = secondDate.getTime() - firstDate.getTime();
 
 			if (dates[j-1].type === 'received' && dates[j].type === 'sent'){
 				responseTimes.mine.push(dateDiff);
+				monthCounts[currMonth]++;
+				monthSums[currMonth] += dateDiff;
+				hourCounts[currHour]++;
+				hourSums[currHour] += dateDiff;
+
 			} else if (dates[j-1].type === 'sent' && dates[j].type === 'received'){
 				responseTimes.theirs.push(dateDiff);
+
 			}
 		}
 
 		// Hash the array of response times.
 		responseTimeHash[contact] = responseTimes;
 	}
+
+	console.log(responseTimes)
 
 	// Eliminate contacts without valid response times, or only one email.
 	for (i = 0; i < contacts.length; i++) {
@@ -232,6 +282,15 @@ function analyzeEmails (messages){
 		contacts: contacts,
 		emailCount: contactHash,
 		responseTimes: responseTimeHash,
+		monthTimes: Object.keys(monthSums).map(function (month){
+			return monthSums[month] / (monthCounts[month] || 1);
+		}),
+		monthCounts: Object.keys(monthSums).map(function (month){
+			return monthCounts[month];
+		}),
+		hourTimes: hourSums.map(function (sum, i){
+			return sum / hourCounts[i];
+		}),
 	};
 }
 

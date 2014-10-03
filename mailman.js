@@ -6,14 +6,39 @@
 var Secret = require('./secret');
 var Imap = require('imap'),
 inspect = require('util').inspect;
+var imap;
 
-var imap = new Imap({
-	user: Secret.user,
-	password: Secret.password,
-	host: 'imap.gmail.com',
-	port: 993,
-	tls: true
-});
+// Initialize with the secret.
+initializeMailman(Secret.user, Secret.password);
+
+function initializeMailman (user, pass) {
+	imap = new Imap({
+		user: user,
+		password: pass,
+		host: 'imap.gmail.com',
+		port: 993,
+		tls: true
+	});
+
+	imap.on('error', errlog);
+	imap.once('end', errlog);
+
+	imap.connect();
+
+	// Call the functions that were waiting for the imap to be ready.
+	imap.once('ready', function() {
+		console.log('Mailman: okay, now I am ready.')
+		module.exports.ready = true;
+
+		if (module.exports.queuedCallbacks.length > 0){
+			module.exports.getMail(function (){
+				for (var i = 0; i < module.exports.queuedCallbacks.length; i++) {
+					module.exports.queuedCallbacks[i](module.exports.messages);
+				}
+			});
+		}
+	});
+}
 
 function openInbox(cb) {
 	imap.openBox('[Gmail]/All Mail', true, cb);
@@ -22,12 +47,6 @@ function openInbox(cb) {
 function errlog(err){
 	console.log(err ? err : 'Done.');
 }
-
-imap.on('error', errlog);
-imap.once('end', errlog);
-
-imap.connect();
-
 
 
 // Export a module with a getMail function.
@@ -44,13 +63,29 @@ module.exports = {
 	queuedCallbacks: [],
 
 	/**
+	 * A function to initialize the mailman again.
+	 */
+	initialize: initializeMailman,
+
+	/**
+	 * Tries to connect to the mailbox.
+	 */
+	connect: function (callback){
+		openInbox(function(err, box) {
+			if (err) throw err;
+
+			callback();
+		});
+	},
+
+	/**
 	 * Gets the mail for the user and returns a promise.
 	 */
 	getMail: function (callback, count){
-		if (!this.ready){
+		if (!module.exports.ready){
 			console.log('Mailman not ready...')
 			if (callback){
-				this.queuedCallbacks.push(callback);
+				module.exports.queuedCallbacks.push(callback);
 			}
 		} else {
 			console.log('Mailman ready...go!');
@@ -111,17 +146,3 @@ module.exports = {
 		}
 	}
 };
-
-// Call the functions that were waiting for the imap to be ready.
-imap.once('ready', function() {
-	console.log('Mailman: okay, now I am ready.')
-	module.exports.ready = true;
-
-	if (module.exports.queuedCallbacks.length > 0){
-		module.exports.getMail(function (){
-			for (var i = 0; i < module.exports.queuedCallbacks.length; i++) {
-				module.exports.queuedCallbacks[i](module.exports.messages);
-			}
-		});
-	}
-});
