@@ -141,7 +141,7 @@ h3{
 }
 #big-stats{
 	font-size: 24px;
-	text-align: left;
+	text-align: center;
 }
 
 #top-list{
@@ -163,7 +163,9 @@ h3{
 	font-size: 14px;
 	font-weight: 200;
 }
-
+#monthContainer, #svgContainer{
+	text-align: center;
+}
 .fast{
 	color: orange;
 }
