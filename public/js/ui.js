@@ -65,6 +65,15 @@ $loadFakeBtn.click(function (){
 	createSVG(.1,"40 min",.4,"Febuary");
 	createSVG(.1,"50 min",.5,"March");
 	createSVG(.1,"90 min",.9,"April");
+	
+	//demo of ticking
+	createSVG2(.1,"30 min",.3,"50 min",.5,"90 min",.9,"10 min",.1, "25 min",.25,"FriendA");
+	createSVG2(.1,"15 min",.15,"10 min",.1,"90 min",.9,"40 min",.4, "70 min",.7,"FriendB");
+	createSVG2(.1,"90 min",.9,"70 min",.7,"50 min",.5,"30 min",.3, "10 min",.1,"FriendC");
+	createSVG2(.1,"10 min",.1,"30 min",.3,"50 min",.5,"70 min",.7, "90 min",.9,"FriendD");
+	
+	// Display the loaded data.
+	displayLoadedData();
 });
 
 $loadDataBtn.click(function (){
