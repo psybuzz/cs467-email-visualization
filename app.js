@@ -55,7 +55,7 @@ app.post('/data', function (req, res){
 var options = {
 	fetchFromFile: true,
 	outputFile: 'my_email.txt',
-	limit: 10,
+	limit: 1000,
 	myAddresses: Secret.aliases || 'krestofur@gmail.com'
 };
 
