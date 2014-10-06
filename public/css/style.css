@@ -41,6 +41,10 @@ h3{
 	width:230px;
 	display:inline-block;
 	margin-bottom: 40px;
+	margin-right:10px;
+	margin-left:10px;
+	padding-bottom:25px;
+	background-color:rgba(255, 255, 255, 0.17);
 }
 .svgDiv h3{
 	line-height: 0;
@@ -143,6 +147,9 @@ h3{
 
 #top-list{
 	display: flex;
+}
+.col{
+	padding-left: 15%;
 }
 #top-list .col{
 	flex-grow: 1;
