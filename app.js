@@ -23,16 +23,18 @@ app.post('/data', function (req, res){
 	var user = req.body.username;
 	var pass = req.body.password;
 	if (user.length > 0 && pass.length > 0){
-		Mailman.initialize(user, pass);
-		Mailman.connect(function (){
+		options.myAddresses = [user];
+
+		Mailman.initialize(user, pass, options.limit);
+		Mailman.connect(function (messages){
 			// If we can authenticate, try to look for a file first.
 			fs.readFile(user+"_"+options.outputFile, 'utf8', function (err,data) {
 				if (err) {
-					// Otherwise, fetch from server.
-					fetchEmailFromServer(user+"_"+options.outputFile, options.limit, function (messages){
+					// Otherwise, return results fetched from server.
+					try{
 						var results = analyzeEmails(messages);
 						res.send(results);
-					});
+					}finally{};
 				} else {
 					var results = analyzeEmails(JSON.parse(data));
 					res.send(results);
@@ -53,7 +55,7 @@ app.post('/data', function (req, res){
 var options = {
 	fetchFromFile: true,
 	outputFile: 'my_email.txt',
-	limit: undefined,
+	limit: 10,
 	myAddresses: Secret.aliases || 'krestofur@gmail.com'
 };
 
@@ -62,6 +64,8 @@ var options = {
 if (options.fetchFromFile){
 	fetchEmailFromFile(options.outputFile);
 } else {
+	// Initialize with the secret.
+	Mailman.initialize(Secret.user, Secret.password, options.limit);
 	fetchEmailFromServer(options.outputFile, options.limit);
 }
 
@@ -96,13 +100,13 @@ function fetchEmailFromFile (outputFile, callback) {
  * @param {Number} limit 		The number of emails to get.  Leave undefined to
  *                         		get all emails.
  * @param {Function} callback 	The callback to be executed with the data.
+ * @param {Function} failback 	The callback to be executed on failure.
  */
-function fetchEmailFromServer (outputFile, limit, callback) {
+function fetchEmailFromServer (outputFile, limit, callback, failback){
 	console.log('Fetching mail...');
 
 	// We can fetch emails to be analyzed and write the results to a file.
 	Mailman.getMail(function (messages){
-		// console.log(messages);
 		console.log('Done fetching messages');
 
 		if (outputFile){
@@ -120,7 +124,7 @@ function fetchEmailFromServer (outputFile, limit, callback) {
 		} else {
 			callback(messages);
 		}
-	}, limit);
+	}, limit, failback);
 }
 
 
@@ -132,6 +136,8 @@ function fetchEmailFromServer (outputFile, limit, callback) {
  * @return {Object}          		A results object.
  */
 function analyzeEmails (messages){
+	if (!messages) return;
+
 	var messageCount = messages.length;
 	console.log('Analyzing', messages.length, 'messages...');
 
@@ -205,6 +211,7 @@ function analyzeEmails (messages){
 	contacts = contacts.filter(function (el){
 		return typeof dateHash[el] !== 'undefined';
 	});
+	console.log('Analyzing', contacts.length, 'contacts');
 
 	// Create space to save month/hour info.
 	var monthSums = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0};
@@ -215,8 +222,6 @@ function analyzeEmails (messages){
 		hourSums[i] = 0;
 		hourCounts[i] = 0;
 	}
-
-	console.log(contacts)
 
 	// Compute response times.
 	var responseTimeHash = {};
