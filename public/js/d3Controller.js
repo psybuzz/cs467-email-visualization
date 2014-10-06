@@ -113,7 +113,126 @@ function createSVG(index_p,text_p,value_p,name_p,container)
 	}
 }
 
+//try some ticking...
+function createSVG2(index_p,
+					text_p,value_p,
+					text_q,value_q,
+					text_r,value_r,
+					text_s,value_s,
+					text_t,value_t,
+					name_p,container)
+{
+	//Variable declarations for SVGs...i know its messy to put here...but aiya
+	var temp = [
+		{index: index_p, text: text_p, value: value_p ,name: name_p}
+	];
+	jsonDataGlobal.push(temp)
 
+	var index_ = index_p;
+	var text_ = [0,text_p,text_q,text_r,text_s,text_t];
+	var value_ = [0,value_p,value_q,value_r,value_s,value_t];
+	var name_ = name_p;
+	var id_ = 'circle-' + (++state.circleNum);
+
+	var width = 200,
+	height = 200,
+	radius = 300,
+	spacing = .12;
+
+
+	var color = d3.scale.linear()
+		.range(["hsl(-180,50%,50%)", "hsl(180,50%,50%)"])
+		.interpolate(interpolateHsl);
+
+	var valueNum = 0;
+	
+	var arc = d3.svg.arc()
+		.startAngle(0)
+		.endAngle(function(d) { return d.value * 2 * Math.PI; })
+		.innerRadius(function(d) { return d.index * radius; })
+		.outerRadius(function(d) { return (d.index + spacing) * radius; });
+
+	d3.select("#" + (container || "svgContainer")).append("div")
+		.attr("class","svgDiv")
+		.attr("id",id_)
+	d3.select("#"+id_).append("h3")
+		.text(name_)
+
+	var svg = d3.select("#"+id_).append("svg")
+		.attr("width", width)
+		.attr("height", height)
+		.attr("id", id_+"SVG")
+		.append("g")
+		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+	var field = svg.selectAll("g")
+		.data(fields)
+		.enter().append("g");
+
+	field.append("path");
+
+	field.append("text");
+
+	d3.transition().duration(0).each(tick);
+
+	d3.select(self.frameElement).style("height", height + "px");
+	function tick() {
+		field = field
+				.each(function(d) { this._value = d.value;})
+				.data(fields)
+				.each(function(d) { d.previousValue = this._value; });
+
+		field.select("path")
+			.transition()
+				.ease("elastic")
+				.attrTween("d", arcTween)
+				.style("fill", function(d) { return color(d.value); });
+
+		field.select("text")
+				.attr("dy", function(d) { return d.value < .5 ? "-.5em" : "1em"; })
+				.text(function(d) { return d.text; })
+			.transition()
+				.ease("elastic")
+				.attr("transform", function(d) {
+					return "rotate(" + 360 * d.value + ")"
+							+ "translate(0," + -(d.index + spacing / 2) * radius + ")"
+							+ "rotate(" + (d.value < .5 ? -90 : 90) + ")"
+				});
+
+		setTimeout(tick, 1000 - Date.now() % 1000);
+	}
+
+
+	var color = d3.scale.linear()
+	.range(["hsl(-180,50%,50%)", "hsl(180,50%,50%)"])
+	.interpolate(interpolateHsl);
+
+	setInterval(function() {
+  		foreground.transition()
+      .duration(750)
+      .call(arcTween, d.value * 2 * Math.PI);
+	}, 12000);
+
+	function arcTween(d) {
+		var i = d3.interpolateNumber(d.previousValue, d.value);
+		return function(t) { d.value = i(t); return arc(d); };
+	}
+
+	function fields() {
+		var now = new Date; //just messing with values
+		var temp1 = [
+			{index: index_, text: text_[Math.min(valueNum,5)], value: value_[Math.min(valueNum++,5)] ,name: name_}
+		];
+		return temp1;
+	}
+	// Avoid shortest-path interpolation.
+	function interpolateHsl(a, b) {
+		var i = d3.interpolateString(a, b);
+		return function(t) {
+			return d3.hsl(i(t));
+		};
+	}
+}
 
 
 /*
