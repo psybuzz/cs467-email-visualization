@@ -75,11 +75,11 @@ $loadFakeBtn.click(function (){
 					" 7 min",.7,"",'contactContainer');
 	data = 
 	[
-    {index: .7, identification: "jonnyx", value: .20},
-    {index: .6, identification: "adeline", value: .50},
-    {index: .5, identification: "prc",   value: .25},
-    {index: .3, identification: "norman",    value: .9},
-    {index: .3, identification: "maks",    value: .7}
+    {index: .7, identification: "jonnyx", value: .20, text: "jonnyx"},
+    {index: .6, identification: "adeline", value: .50, text: "adeline"},
+    {index: .5, identification: "prc",   value: .25, text: "prc"},
+    {index: .3, identification: "norman",    value: .9, text: "norman"},
+    {index: .3, identification: "maks",    value: .7, text: "maks "}
   ];
 	createLegend(data);
 	$('#big-stats').html('Your average response time is <span class="fast">34 days</span> (median: 2 days) ranging from 1 min to 879 days.<br>It takes others about <span class="slow">17 days</span> (median: 3 days) to respond to you ranging from 23 sec to 443 days');

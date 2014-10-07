@@ -39,6 +39,8 @@ function createSVG(index_p,text_p,value_p,name_p,container)
 	d3.select("#" + (container || "svgContainer")).append("div")
 		.attr("class","svgDiv")
 		.attr("id",id_)
+	d3.select("#"+id_).append("h3")
+		.text(name_)
 
 
 	var svg = d3.select("#"+id_).append("svg")
