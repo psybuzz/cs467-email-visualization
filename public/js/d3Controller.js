@@ -3,9 +3,33 @@ var jsonDataGlobal = []; //holds array of values which will be taken from backen
 
 
 $("document").ready(function(){
-	//createLegend(); //create a legend
+	//createLegend(); create a legend
 })
 
+function createLegend(jsonDataGlobal1){
+	var color = d3.scale.linear()
+			.range(["hsl(-180,50%,50%)", "hsl(180,50%,50%)"])
+			.interpolate(interpolateHsl);
+	function interpolateHsl(a, b) {
+			var i = d3.interpolateString(a, b);
+			return function(t) {
+				return d3.hsl(i(t));
+			};
+		}
+	console.log(jsonDataGlobal1)
+	jsonDataGlobal1.forEach(function(data){
+			console.log(data)
+			var redColor = color(data.value).rgb().r;
+			var greenColor = color(data.value).rgb().g;
+			var blueColor = color(data.value).rgb().b;
+			var dataValue = data.value;
+			var dataText = data.text;
+			$("#legend-labels").append("<li id = '"+ dataText+ "'></li>");
+		 $("#"+dataText).text(dataText)
+		 $("#"+dataText).append("<span></span>")
+		 var backgroundColor = " rgb(" + redColor + "," + greenColor + "," + blueColor + ")";
+		 $("#"+dataText+" span").css("background",backgroundColor);
+})};
 
 function createSVG(index_p,text_p,value_p,name_p,container)
 {
@@ -40,8 +64,7 @@ function createSVG(index_p,text_p,value_p,name_p,container)
 	d3.select("#" + (container || "svgContainer")).append("div")
 		.attr("class","svgDiv")
 		.attr("id",id_)
-	d3.select("#"+id_).append("h3")
-		.text(name_)
+
 
 	var svg = d3.select("#"+id_).append("svg")
 		.attr("width", width)

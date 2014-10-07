@@ -66,12 +66,20 @@ $loadFakeBtn.click(function (){
 	createSVG(.1,"50 min",.5,"March", 'monthContainer');
 	createSVG(.1,"90 min",.9,"April", 'monthContainer');
 	
-	createSVGlarge( "Joe 20 min",.2,
-					"Fred 50 min",.5,
-					"Max 25 min",.25,
-					"Amy 70 min",.7,
-					"Mary 40 min",.4,"",'contactContainer');
-	
+	createSVGlarge( " 20 min",.2,
+					" 50 min",.5,
+					" 25 min",.25,
+					" 70 min",.7,
+					" 40 min",.4,"",'contactContainer');
+	data = 
+	[
+    {index: .7, text: "Joe", value: .20},
+    {index: .6, text: "Fred", value: .50},
+    {index: .5, text: "Max",   value: .25},
+    {index: .3, text: "Mary",    value: .7},
+    {index: .3, text: "Amy",    value: .4}
+  ];
+	createLegend(data);
 	$('#big-stats').html('Your average response time is <span class="fast">34 days</span> (median: 2 days) ranging from 1 min to 879 days.<br>It takes others about <span class="slow">17 days</span> (median: 3 days) to respond to you ranging from 23 sec to 443 days');
 
 	$('#top-list').html('' +
@@ -87,7 +95,7 @@ $loadFakeBtn.click(function (){
 				'<span class="list-title">People who respond <span class="slow">slowly</span> to me</span>' +
 				'<ul id="theirs-slow"><li>443 days: mystery@uiuc.edu</li><li>196 days: joe.doe@gmail.com</li><li>187 days: lorem.ipsum2@gmail.com</li><li>159 days: adacraft332@gmail.com</li><li>116 days: jamescp@gmail.com</li></ul>' +
 			'</div>');
-	
+
 
 	$('#results').show();
 });

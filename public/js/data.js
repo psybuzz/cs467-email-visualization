@@ -126,7 +126,7 @@ function displayLoadedData (){
 			prettyTime(state.minMyAvgTime) +
 			" to " +
 			prettyTime(state.maxMyAvgTime)
-			+ ".<br>It takes others about <span class='slow'>" +
+			+ ".It takes others about <span class='slow'>" +
 			prettyTime(state.overallTheirAvgTime) +
 			"</span> (median: " + prettyTime(state.medianTheirAvgTime) + ")" +
 			" to respond to you ranging from " +

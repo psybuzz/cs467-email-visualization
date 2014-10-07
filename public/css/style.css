@@ -38,7 +38,6 @@ h3{
 	font-weight: 100;
 }
 .svgDiv{
-	width:230px;
 	display:inline-block;
 	margin-bottom: 40px;
 	margin-right:10px;
@@ -172,3 +171,5 @@ h3{
 .slow{
 	color: lightgreen;
 }
+
+
