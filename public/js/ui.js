@@ -54,6 +54,7 @@ function resetSvgContainer (){
 $loadDataBtn = $('#load-data-btn');
 $loadFakeBtn = $('#load-fake-btn');
 
+
 /**
  * Load-data button logic.
  */
@@ -66,18 +67,18 @@ $loadFakeBtn.click(function (){
 	createSVG(.1,"50 min",.5,"March", 'monthContainer');
 	createSVG(.1,"90 min",.9,"April", 'monthContainer');
 	
-	createSVGlarge( " 20 min",.2,
-					" 50 min",.5,
-					" 25 min",.25,
-					" 70 min",.7,
-					" 40 min",.4,"",'contactContainer');
+	createSVGlarge( " 1 min",.2,
+					" 4 min",.4,
+					" 5 min",.5,
+					" 7 min",.7,
+					" 7 min",.7,"",'contactContainer');
 	data = 
 	[
-    {index: .7, text: "Joe", value: .20},
-    {index: .6, text: "Fred", value: .50},
-    {index: .5, text: "Max",   value: .25},
-    {index: .3, text: "Mary",    value: .7},
-    {index: .3, text: "Amy",    value: .4}
+    {index: .7, text: "jonnyx", value: .20},
+    {index: .6, text: "adeline", value: .50},
+    {index: .5, text: "prc",   value: .25},
+    {index: .3, text: "norman",    value: .9},
+    {index: .3, text: "maks",    value: .7}
   ];
 	createLegend(data);
 	$('#big-stats').html('Your average response time is <span class="fast">34 days</span> (median: 2 days) ranging from 1 min to 879 days.<br>It takes others about <span class="slow">17 days</span> (median: 3 days) to respond to you ranging from 23 sec to 443 days');
