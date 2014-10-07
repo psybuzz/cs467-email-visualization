@@ -66,11 +66,11 @@ $loadFakeBtn.click(function (){
 	createSVG(.1,"50 min",.5,"March", 'monthContainer');
 	createSVG(.1,"90 min",.9,"April", 'monthContainer');
 	
-	//demo of ticking
-	createSVG2(.1,"30 min",.3,"50 min",.5,"90 min",.9,"10 min",.1, "25 min",.25,"FriendA");
-	createSVG2(.1,"15 min",.15,"10 min",.1,"90 min",.9,"40 min",.4, "70 min",.7,"FriendB");
-	createSVG2(.1,"90 min",.9,"70 min",.7,"50 min",.5,"30 min",.3, "10 min",.1,"FriendC");
-	createSVG2(.1,"10 min",.1,"30 min",.3,"50 min",.5,"70 min",.7, "90 min",.9,"FriendD");
+	createSVGlarge( "Joe 20 min",.2,
+					"Fred 50 min",.5,
+					"Max 25 min",.25,
+					"Amy 70 min",.7,
+					"Mary 40 min",.4,"",'contactContainer');
 	
 	$('#big-stats').html('Your average response time is <span class="fast">34 days</span> (median: 2 days) ranging from 1 min to 879 days.<br>It takes others about <span class="slow">17 days</span> (median: 3 days) to respond to you ranging from 23 sec to 443 days');
 
