@@ -3,7 +3,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="css/introjs.css">
+	<link rel="stylesheet" type="text/css" href="css/toastr.min.css">
 	<title>Email Response Time Visualization</title>
 </head>
 <body>
@@ -51,17 +51,20 @@
 		<h1>People I respond quickly to</h1>
 		<div id ="svgContainer"></div>
 		
+		<div id = "containerSummary">
+			<h1>Summary of Contacts Selected</h1>
+			  <div class = "container">
+			    <div id='my-legend'>
+			      <div id='legend-title'>Legend </div>
+			      <div id='legend-scale'>
+			      <ul id='legend-labels'>
+			      </ul>
+			    </div>
+			  </div>
+			<div id ="contactContainer"></div>
+		</div>
 
-		<h1>Summary of Contacts Selected</h1>
-		  <div class = "container">
-		    <div id='my-legend'>
-		      <div id='legend-title'>Legend </div>
-		      <div id='legend-scale'>
-		      <ul id='legend-labels'>
-		      </ul>
-		    </div>
-		  </div>
-		<div id ="contactContainer"></div>
+
 	</div>
 
   </div>
@@ -73,7 +76,7 @@
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="js/d3Controller.js"></script>
 <script src="js/login.js"></script>
-<script src="js/intro.js"></script>
 <script src="js/data.js"></script>
+<script src="js/toastr.min.js"></script>
 <script src="js/ui.js"></script>
 

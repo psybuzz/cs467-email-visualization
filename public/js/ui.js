@@ -102,6 +102,15 @@ $loadFakeBtn.click(function (){
 });
 
 $loadDataBtn.click(function (){
+
+	$("#containerSummary").hide(); //this functionality doesnt work with real data yet. 
+
+	var validateFlag = validation();
+	if(!validateFlag){
+		return //validaiton failed. 
+	}
+
+
 	if (!UI.loadingData){
 		UI.loadingData = true;
 		this.innerText = UI.LOADING_TEXT;
@@ -147,7 +156,21 @@ $loadDataBtn.click(function (){
 	}
 });
 
-
+function validation(){
+	//validation
+	if($("#login-form").css("display")=="none"){toastr.error("Please Click on Enter Email Login First"); return false;}
+	if($("#username-input").val()=="")
+	{
+		toastr.error("Missing Email")
+		return false;
+	}
+	if($("#password-input").val()=="")
+	{
+		toastr.error("Missing Password")
+		return false;
+	}
+	return true;
+}
 
 // Constants.
 UI.LOAD_BUTTON_DEFAULT_TEXT = 'Load Real Data';
