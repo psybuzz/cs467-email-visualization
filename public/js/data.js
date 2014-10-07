@@ -176,6 +176,23 @@ function displayLoadedData (){
 				return prettyTime(state.avgResponseTimes[el].theirs) + ": " + el;
 			}).join('</li><li>') +
 			"</li>");
+
+	data = [];
+	counter =0;
+	mineContactSorted.slice(0, UI.listSize).map(function (el){
+				var temp = new Date(state.avgResponseTimes[el].mine)
+				data.push({text:el,value: temp.getHours()/24,identification: counter,time: state.avgResponseTimes[el].mine, timeText: prettyTime(state.avgResponseTimes[el].mine)});
+				counter++;
+	})
+	createLegend(data)
+	console.log(data)
+
+	createSVGlarge( data[0].timeText,data[0].value,
+					data[1].timeText,data[1].value,
+					data[2].timeText,data[2].value,
+					data[3].timeText,data[3].value,
+					data[4].timeText,data[4].value,"",'contactContainer');
+
 }
 
 // Utility functions.

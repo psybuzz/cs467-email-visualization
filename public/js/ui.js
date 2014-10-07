@@ -60,6 +60,7 @@ $loadFakeBtn = $('#load-fake-btn');
  */
 
 $loadFakeBtn.click(function (){
+
 	resetSvgContainer();
 
 	createSVG(.1,"30 min",.3,"January", 'monthContainer');
@@ -74,11 +75,11 @@ $loadFakeBtn.click(function (){
 					" 7 min",.7,"",'contactContainer');
 	data = 
 	[
-    {index: .7, text: "jonnyx", value: .20},
-    {index: .6, text: "adeline", value: .50},
-    {index: .5, text: "prc",   value: .25},
-    {index: .3, text: "norman",    value: .9},
-    {index: .3, text: "maks",    value: .7}
+    {index: .7, identification: "jonnyx", value: .20},
+    {index: .6, identification: "adeline", value: .50},
+    {index: .5, identification: "prc",   value: .25},
+    {index: .3, identification: "norman",    value: .9},
+    {index: .3, identification: "maks",    value: .7}
   ];
 	createLegend(data);
 	$('#big-stats').html('Your average response time is <span class="fast">34 days</span> (median: 2 days) ranging from 1 min to 879 days.<br>It takes others about <span class="slow">17 days</span> (median: 3 days) to respond to you ranging from 23 sec to 443 days');
@@ -99,16 +100,17 @@ $loadFakeBtn.click(function (){
 
 
 	$('#results').show();
+		toastr.success("Data Loaded Successfully")
+
 });
 
 $loadDataBtn.click(function (){
-
-	$("#containerSummary").hide(); //this functionality doesnt work with real data yet. 
 
 	var validateFlag = validation();
 	if(!validateFlag){
 		return //validaiton failed. 
 	}
+	toastr.info("Loading data for " + $("#username-input").val());
 
 
 	if (!UI.loadingData){
@@ -148,11 +150,16 @@ $loadDataBtn.click(function (){
 
 					// Display the loaded data.
 					displayLoadedData();
+
+					// Notify user
+					console.log(state)
+					toastr.success("Data Loaded Successfully")
 				});
 	} else {
 		resetSvgContainer();
 
 		displayLoadedData();
+		toastr.error("Data failed to load")
 	}
 });
 

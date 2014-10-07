@@ -261,9 +261,10 @@ function createLegend(jsonDataGlobal1){
 			var greenColor = color(data.value).rgb().g;
 			var blueColor = color(data.value).rgb().b;
 			var dataValue = data.value;
-			var dataText = data.text;
+			var dataName = data.text;
+			var dataText = data.identification;
 			$("#legend-labels").append("<li id = '"+ dataText+ "'></li>");
-		 $("#"+dataText).text(dataText)
+		 $("#"+dataText).text(dataName)
 		 $("#"+dataText).append("<span></span>")
 		 var backgroundColor = " rgb(" + redColor + "," + greenColor + "," + blueColor + ")";
 		 $("#"+dataText+" span").css("background",backgroundColor);
