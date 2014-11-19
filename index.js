@@ -1,6 +1,7 @@
 var Secret = require('./secret');
 var Mailman = require('./mailman');
 var express = require('express');
+//var bodyParser = require("body-parser")
 var port = process.env.PORT || 3000;
 var fs = require('fs');
 var app = express();
@@ -14,12 +15,14 @@ server.listen(port, function () {
 app.use(express.static(__dirname + '/public'));
 
 // Use JSON request bodies.
-// app.use(express.bodyParser());
+//commented due to issues with middleware and express.
+//app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 
 // Serve pre-saved email data from local files.
 app.post('/data', function (req, res){
+	console.log(req)
 	var user = req.body.username;
 	var pass = req.body.password;
 	if (user.length > 0 && pass.length > 0){
