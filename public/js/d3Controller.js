@@ -126,8 +126,8 @@ function createSVGlarge(
 	];
 	jsonDataGlobal.push(temp)
 
-	var width = 500,
-	    height = 500,
+	var width = window.innerWidth / 2,
+	    height = window.innerWidth / 2,
 	    radius = Math.min(width, height) / 1.9,
  	    spacing = .15;
 

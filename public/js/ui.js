@@ -66,7 +66,11 @@ $loadFakeBtn.click(function (){
 	createSVG(.1,"30 min",.3,"January", 'monthContainer');
 	createSVG(.1,"40 min",.4,"Febuary", 'monthContainer');
 	createSVG(.1,"50 min",.5,"March", 'monthContainer');
-	createSVG(.1,"90 min",.9,"April", 'monthContainer');
+	createSVG(.1,"20 min",.2,"April", 'monthContainer');
+	createSVG(.1,"10 min",.1,"May", 'monthContainer');
+	createSVG(.1,"15 min",.15,"June", 'monthContainer');
+	createSVG(.1,"30 min",.3,"July", 'monthContainer');
+	createSVG(.1,"50 min",.5,"August", 'monthContainer');
 	
 	createSVGlarge( " 1 min",.2,
 					" 4 min",.4,
@@ -84,20 +88,44 @@ $loadFakeBtn.click(function (){
 	createLegend(data);
 	$('#big-stats').html('Your average response time is <span class="fast">34 days</span> (median: 2 days) ranging from 1 min to 879 days.<br>It takes others about <span class="slow">17 days</span> (median: 3 days) to respond to you ranging from 23 sec to 443 days');
 
-	$('#top-list').html('' +
-			'<div class="col">' +
-				'<span class="list-title">People I respond <span class="fast">quickly</span> to</span>' +
-				'<ul id="mine-fast"><li>1 min: jonny.x@linkedin.com</li><li>4 min: adeline@gmail.com</li><li>5 min: prc@uiuc.edu</li><li>7 min: norman.c@uiuc.edu</li><li>7 min: maks@uiuc.edu</li></ul>' +
-				'<span class="list-title">People who respond <span class="fast">quickly</span> to me</span>' +
-				'<ul id="theirs-fast"><li>23 sec: jobs@google.com</li><li>25 sec: it-help@illinois.edu</li><li>1 min: mrstuart@linkedin.com</li><li>1 min: ipod@illinois.edu</li><li>2 min: dragonista@gmail.com</li></ul>' +
-			'</div>' +
-			'<div class="col">' +
-				'<span class="list-title">People I respond <span class="slow">slowly</span> to</span>' +
-				'<ul id="mine-slow"><li>879 days: whoami@gmail.com</li><li>428 days: wongfu@gmail.com</li><li>395 days: curryandpasta@gmail.com</li><li>381 days: meet1232132@gmail.com</li><li>318 days: pmonrose@illinois.edu</li></ul>' +
-				'<span class="list-title">People who respond <span class="slow">slowly</span> to me</span>' +
-				'<ul id="theirs-slow"><li>443 days: mystery@uiuc.edu</li><li>196 days: joe.doe@gmail.com</li><li>187 days: lorem.ipsum2@gmail.com</li><li>159 days: adacraft332@gmail.com</li><li>116 days: jamescp@gmail.com</li></ul>' +
-			'</div>');
+	if (window.innerWidth > 640){
+		$('#top-list').html('' +
+				'<div class="col">' +
+					'<span class="list-title">People I respond <span class="fast">quickly</span> to</span>' +
+					'<ul id="mine-fast"><li><span class="time" data-value="1">1 min:</span> jonny.x@linkedin.com</li><li><span class="time" data-value="4">4 min:</span> adeline@gmail.com</li><li><span class="time" data-value="5">5 min:</span> prc@uiuc.edu</li><li><span class="time" data-value="7">7 min:</span> norman.c@uiuc.edu</li><li><span class="time" data-value="7">7 min:</span> maks@uiuc.edu</li></ul>' +
+					'<span class="list-title">People who respond <span class="fast">quickly</span> to me</span>' +
+					'<ul id="theirs-fast"><li><span class="time" data-value="23">23 sec:</span> jobs@google.com</li><li><span class="time" data-value="25">25 sec:</span> it-help@illinois.edu</li><li><span class="time" data-value="1">1 min:</span> mrstuart@linkedin.com</li><li><span class="time" data-value="1">1 min:</span> ipod@illinois.edu</li><li><span class="time" data-value="2">2 min:</span> dragonista@gmail.com</li></ul>' +
+				'</div>' +
+				'<div class="col">' +
+					'<span class="list-title">People I respond <span class="slow">slowly</span> to</span>' +
+					'<ul id="mine-slow"><li><span class="time" data-value="879">879 days:</span> whoami@gmail.com</li><li><span class="time" data-value="428">428 days:</span> wongfu@gmail.com</li><li><span class="time" data-value="395">395 days:</span> curryandpasta@gmail.com</li><li><span class="time" data-value="381">381 days:</span> meet1232132@gmail.com</li><li><span class="time" data-value="318">318 days:</span> pmonrose@illinois.edu</li></ul>' +
+					'<span class="list-title">People who respond <span class="slow">slowly</span> to me</span>' +
+					'<ul id="theirs-slow"><li><span class="time" data-value="443">443 days:</span> mystery@uiuc.edu</li><li><span class="time" data-value="196">196 days:</span> joe.doe@gmail.com</li><li><span class="time" data-value="187">187 days:</span> lorem.ipsum2@gmail.com</li><li><span class="time" data-value="159">159 days:</span> adacraft332@gmail.com</li><li><span class="time" data-value="116">116 days:</span> jamescp@gmail.com</li></ul>' +
+				'</div>');
+	} else {
+		$('#top-list').html('' +
+				'<div class="col">' +
+					'<span class="list-title">People I respond <span class="fast">quickly</span> to</span>' +
+					'<ul id="mine-fast"><li><span class="time" data-value="1">1 min:</span> jonny.x@linkedin.com</li><li><span class="time" data-value="4">4 min:</span> adeline@gmail.com</li><li><span class="time" data-value="5">5 min:</span> prc@uiuc.edu</li><li><span class="time" data-value="7">7 min:</span> norman.c@uiuc.edu</li><li><span class="time" data-value="7">7 min:</span> maks@uiuc.edu</li></ul>' +
+					'<span class="list-title">People who respond <span class="fast">quickly</span> to me</span>' +
+					'<ul id="theirs-fast"><li><span class="time" data-value="23">23 sec:</span> jobs@google.com</li><li><span class="time" data-value="25">25 sec:</span> it-help@illinois.edu</li><li><span class="time" data-value="1">1 min:</span> mrstuart@linkedin.com</li><li><span class="time" data-value="1">1 min:</span> ipod@illinois.edu</li><li><span class="time" data-value="2">2 min:</span> dragonista@gmail.com</li></ul>' +
+					'<span class="list-title">People I respond <span class="slow">slowly</span> to</span>' +
+					'<ul id="mine-slow"><li><span class="time" data-value="879">879 days:</span> whoami@gmail.com</li><li><span class="time" data-value="428">428 days:</span> wongfu@gmail.com</li><li><span class="time" data-value="395">395 days:</span> curryandpasta@gmail.com</li><li><span class="time" data-value="381">381 days:</span> meet1232132@gmail.com</li><li><span class="time" data-value="318">318 days:</span> pmonrose@illinois.edu</li></ul>' +
+					'<span class="list-title">People who respond <span class="slow">slowly</span> to me</span>' +
+					'<ul id="theirs-slow"><li><span class="time" data-value="443">443 days:</span> mystery@uiuc.edu</li><li><span class="time" data-value="196">196 days:</span> joe.doe@gmail.com</li><li><span class="time" data-value="187">187 days:</span> lorem.ipsum2@gmail.com</li><li><span class="time" data-value="159">159 days:</span> adacraft332@gmail.com</li><li><span class="time" data-value="116">116 days:</span> jamescp@gmail.com</li></ul>' +
+				'</div>');
+	}
 
+	$('#svgContainer').html(
+			'<h2>Johnny Smith</h2>' +
+			'<h2>Adeline Gable</h2>' +
+			'<h2>Norman Wiggins</h2>');
+
+	// Add listener for faster scrolling.
+	$('.svgDiv').click(function (e){
+		var next = $(this).next()[0];
+		if (next) next.scrollIntoView();
+	});
 
 	$('#results').show();
 		toastr.success("Data Loaded Successfully")
