@@ -3,7 +3,7 @@
  * https://github.com/mscdex/node-imap
  */
 
-var Secret = require('./secret');
+// var Secret = require('./secret');
 var Imap = require('imap'),
 inspect = require('util').inspect;
 var imap;

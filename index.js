@@ -1,4 +1,4 @@
-var Secret = require('./secret');
+// var Secret = require('./secret');	// LOCAL CONFIG ONLY.
 var Mailman = require('./mailman');
 var express = require('express');
 //var bodyParser = require("body-parser")
@@ -54,24 +54,26 @@ app.post('/data', function (req, res){
 
 
 
-// Configuration options.
-var options = {
-	fetchFromFile: true,
-	outputFile: 'my_email.txt',
-	limit: 1000,
-	myAddresses: Secret.aliases || 'krestofur@gmail.com'
-};
+// LOCAL CONFIG ONLY
+// 
+// // Configuration options.
+// var options = {
+// 	fetchFromFile: true,
+// 	outputFile: 'my_email.txt',
+// 	limit: 1000,
+// 	myAddresses: Secret.aliases || 'krestofur@gmail.com'
+// };
 
-// Either fetch email data from online and save to a file, or read from a
-// previously saved file.  Both paths will end with a call to analysis.
-if (options.fetchFromFile){
-	fetchEmailFromFile(options.outputFile);
-} else {
-	// Initialize with the secret.
-	Mailman.initialize(Secret.user, Secret.password, options.limit);
-	fetchEmailFromServer(options.outputFile, options.limit);
-}
-
+// // Either fetch email data from online and save to a file, or read from a
+// // previously saved file.  Both paths will end with a call to analysis.
+// if (options.fetchFromFile){
+// 	fetchEmailFromFile(options.outputFile);
+// } else {
+// 	// Initialize with the secret.
+// 	Mailman.initialize(Secret.user, Secret.password, options.limit);
+// 	fetchEmailFromServer(options.outputFile, options.limit);
+// }
+// END LOCAL CONFIG
 
 
 /**
